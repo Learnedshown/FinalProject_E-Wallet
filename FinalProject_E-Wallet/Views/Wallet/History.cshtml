@@ -1,0 +1,37 @@
+﻿@model List<Transaction>
+
+<h2 class="mb-3">Transaction History</h2>
+
+<a href="/Wallet/Dashboard" class="btn btn-secondary mb-3">Back</a>
+
+<table class="table table-striped table-bordered">
+
+    <thead class="table-dark">
+        <tr>
+            <th>Date</th>
+            <th>Type</th>
+            <th>Amount</th>
+            <th>Sender</th>
+            <th>Receiver</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var t in Model)
+        {
+            var users = ViewBag.Users as List<User>;
+
+            var sender = users.FirstOrDefault(u => u.Id == t.SenderId);
+            var receiver = users.FirstOrDefault(u => u.Id == t.ReceiverId);
+
+            <tr>
+                <td>@t.Date.ToString("MMM dd, yyyy hh:mm tt")</td>
+                <td>@t.Type</td>
+                <td>₱@t.Amount</td>
+                <td>@sender?.FullName</td>
+                <td>@receiver?.FullName</td>
+            </tr>
+        }
+    </tbody>
+
+</table>

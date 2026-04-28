@@ -1,0 +1,88 @@
+E-Wallet MVC Web Application
+
+Development Log
+
+
+DAY 1 – Project Setup and Basic Features
+
+1. Created a new ASP.NET Core MVC project using Visual Studio. I chose the MVC template without authentication so I can build a simple login system manually for learning purposes.
+
+2. Configured the database connection by adding a connection string in `appsettings.json` for SQL Server LocalDB.
+
+3. Installed Entity Framework Core packages to enable database operations in the project.
+
+4. Created the main models for the system:
+
+   * User model (Id, FullName, Email, Password, Balance)
+   * Transaction model (SenderId, ReceiverId, Amount, Date, Type)
+
+5. Ran database migration commands:
+
+   * Add-Migration Initial
+   * Update-Database
+     to generate the database tables.
+
+6. Created a simple session-based login system:
+
+   * Users can register
+   * Users can login using email and password
+   * Session stores the logged-in user
+   * Logout clears the session
+
+7. Created basic views for login and register pages.
+
+8. Added Bootstrap CDN for basic UI styling.
+
+9. At the end of Day 1, the system can:
+
+   * Register users
+   * Login users
+   * Store data in SQL Server
+   * Maintain session login state
+
+
+
+DAY 2 – Wallet System and Transactions
+
+1. Created the Cash In feature where users can add money to their wallet balance.
+
+2. When a user cashes in:
+
+   * The amount is added to their balance
+   * A transaction record is saved in the database
+
+3. Created the Send Money feature:
+
+   * User enters receiver email and amount
+   * System checks if receiver exists
+   * System checks if sender has enough balance
+   * Money is deducted from sender
+   * Money is added to receiver
+   * Transaction is saved in database
+
+4. Created the Transaction History page:
+
+   * Displays all transactions of the user
+   * Shows sent and received transactions
+   * Replaced User IDs with Full Names for better readability
+
+5. Implemented error and success messages using TempData:
+
+   * Shows error if transaction fails
+   * Shows success message after actions
+
+6. Improved the UI using Basic Bootstrap:
+
+   * Styled forms using cards
+   * Styled dashboard layout
+   * Styled tables for transaction history
+   * Made interface more clean and readable
+
+7. At the end of Day 2, the system can:
+
+   * Cash in money
+   * Send money to other users
+   * Display transaction history
+   * Show success and error messages
+   * Provide a simple and clean UI
+
