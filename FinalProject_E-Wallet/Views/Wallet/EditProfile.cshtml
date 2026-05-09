@@ -1,19 +1,7 @@
 ﻿@model EditProfileViewModel
 
 <div class="container mt-4">
-    @if (TempData["Error"] != null)
-    {
-        <div class="alert alert-danger">
-            @TempData["Error"]
-        </div>
-    }
-
-    @if (TempData["Success"] != null)
-    {
-        <div class="alert alert-success">
-            @TempData["Success"]
-        </div>
-    }
+   
 
     <div class="card shadow-sm p-4">
         <a asp-controller="Wallet" asp-action="Dashboard" class="text-dark fs-5">
@@ -28,7 +16,7 @@
             <div class="text-center mb-3">
 
                 <img id="previewImage"
-                     src="@(Model.ProfilePicturePath ?? "/images/default.png")"
+                     src="@(Model.ProfilePicturePath ?? "/images/Bucash.png")"
                      class="rounded-circle"
                      width="120"
                      height="120"
@@ -81,13 +69,13 @@
             <!-- NEW PASSWORD -->
             <div class="mb-3">
                 <label>New Password</label>
-                <input asp-for="NewPassword" class="form-control" type="password" />
+                <input asp-for="NewPassword" class="form-control" type="password" autocomplete="new-password"/>
             </div>
 
             <!-- CONFIRM PASSWORD -->
             <div class="mb-3">
                 <label>Confirm Password</label>
-                <input asp-for="ConfirmPassword" class="form-control" type="password" />
+                <input asp-for="ConfirmPassword" class="form-control" type="password" autocomplete="new-password" />
             </div>
 
             <button type="submit" class="btn btn-primary w-100">

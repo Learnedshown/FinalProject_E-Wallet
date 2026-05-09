@@ -214,7 +214,7 @@ namespace FinalProject_E_Wallet.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditProfile(EditProfileViewModel model, IFormFile profileImage)
+        public async Task<IActionResult> EditProfile(EditProfileViewModel model, IFormFile? profileImage)
         {
             var user = GetCurrentUser();
 
@@ -223,6 +223,13 @@ namespace FinalProject_E_Wallet.Controllers
 
             if (!ModelState.IsValid)
             {
+                var errors = ModelState
+        .Values
+        .SelectMany(v => v.Errors)
+        .Select(e => e.ErrorMessage)
+        .ToList();
+
+                Console.WriteLine(string.Join("\n", errors));
                 return View(model);
             }
 
@@ -232,9 +239,12 @@ namespace FinalProject_E_Wallet.Controllers
             user.LastName = model.LastName;
             user.PhoneNumber = model.PhoneNumber;
 
+            Console.WriteLine("Password: " + model.NewPassword);
+
             // PASSWORD UPDATE (ONLY IF USER ENTERS NEW ONE)
             if (!string.IsNullOrEmpty(model.NewPassword))
             {
+                Console.WriteLine("Password: " + model.NewPassword);
                 if (model.NewPassword != model.ConfirmPassword)
                 {
                     ModelState.AddModelError("", "Passwords do not match!");
