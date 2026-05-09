@@ -1,47 +1,258 @@
-﻿
-@model User
+﻿@model User
 
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <h2>Welcome, @Model.FullName</h2>
-    <a href="/Account/Logout" class="btn btn-outline-danger">Logout</a>
-</div>
+<div class="container mt-4">
 
+    <!-- HEADER -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
 
-<div class="card p-3 mb-3 shadow-sm">
-    <h4>Balance</h4>
-    <h2 class="text-success">₱@Model.Balance</h2>
-</div>
+        <h2 class="fw-bold">
+            Welcome to BuCash
+        </h2>
 
-<div class="row">
+        <a href="/Account/Logout"
+           class="btn btn-danger">
+            Logout
+        </a>
 
-    <!-- CASH IN -->
-    <div class="col-md-6">
-        <div class="card p-3 shadow-sm">
-            <h5>Cash In</h5>
-            <form asp-action="CashIn" method="post">
-                <input name="amount" type="number" class="form-control mb-2" />
-                <button class="btn btn-success w-100">Cash In</button>
-            </form>
-        </div>
     </div>
 
-    <!-- SEND MONEY -->
-    <div class="col-md-6">
-        <div class="card p-3 shadow-sm">
-            <h5>Send Money</h5>
-            <form asp-action="Send" method="post">
+    <!-- MAIN GRID -->
+    <div class="row g-4">
 
-                <input name="receiverEmail" placeholder="Receiver Email"
-                       class="form-control mb-2" />
+        <!-- 1ST QUADRANT : BALANCE -->
+        <div class="col-md-6">
 
-                <input name="amount" type="number" placeholder="Amount"
-                       class="form-control mb-2" />
+            <div class="card shadow-sm border-0 h-100">
 
-                <button class="btn btn-primary w-100">Send</button>
-            </form>
+                <div class="card-body d-flex flex-column justify-content-between">
+
+                    <div>
+
+                        <h3 class="fw-bold mb-4">
+                            Total Balance
+                        </h3>
+
+                        <h1 class="text-success fw-bold">
+                            ₱ @Model.Balance
+                        </h1>
+
+                    </div>
+
+                    <div class="mt-4">
+
+                        <a href="#"
+                           class="btn btn-dark">
+                            View Wallet
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
         </div>
+
+        <!-- 2ND QUADRANT : PROFILE -->
+        <div class="col-md-6">
+
+            <div class="card shadow-sm border-0 h-100">
+
+                <div class="card-body">
+
+                    <div class="d-flex align-items-center">
+
+                        <!-- PROFILE ICON👤 -->
+                        <div class="border rounded d-flex justify-content-center align-items-center"
+                             style="width:120px; height:120px; font-size:50px;">
+
+                            <img src="@(Url.Content(Model.ProfilePicturePath) ?? "~/images/Bucash.png")"
+                                 class="rounded-circle"
+                                 width="100"
+                                 height="100"
+                                 style="object-fit: cover;" />
+                            
+
+                        </div>
+                        
+
+                        <!-- USER INFO -->
+                        <div class="ms-4">
+
+                            <h2 class="fw-bold mb-2">
+                                @Model.FullName
+                            </h2>
+
+                            <p class="text-muted mb-1">
+                                @Model.Email
+                            </p>
+
+                            <p class="text-muted">
+                                BuCash User
+                            </p>
+
+                        </div>
+
+                    </div>
+                    <a asp-action="EditProfile" asp-controller="Wallet">Edit Profile</a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- 3RD QUADRANT : QUICK ACTIONS -->
+        <div class="col-md-6">
+
+            <div class="card shadow-sm border-0 h-100" >
+
+                <div class="card-body">
+
+                    <h3 class="fw-bold mb-4">
+                        Quick Actions
+                    </h3>
+
+                    <div class="row text-center g-3">
+
+                        <!-- SEND -->
+                        <div class="col-4">
+
+                            <a href="/Wallet/Send"
+                               class="text-decoration-none text-dark">
+
+                                <div class="border rounded p-4 h-100">
+
+                                    <div style="font-size:30px;">
+                                        📤
+                                    </div>
+
+                                    <div class="mt-2 fw-semibold">
+                                        Send
+                                    </div>
+
+                                </div>
+
+                            </a>
+
+                        </div>
+
+                        <!-- CASH IN -->
+                        <div class="col-4">
+
+                            <a href="/Wallet/CashIn"
+                               class="text-decoration-none text-dark">
+
+                                <div class="border rounded p-4 h-100">
+
+                                    <div style="font-size:30px;">
+                                        💵
+                                    </div>
+
+                                    <div class="mt-2 fw-semibold">
+                                        Cash In
+                                    </div>
+
+                                </div>
+
+                            </a>
+
+                        </div>
+
+                        <!-- TRANSACTIONS -->
+                        <div class="col-4">
+
+                            <a href="/Wallet/History"
+                               class="text-decoration-none text-dark">
+
+                                <div class="border rounded p-4 h-100">
+
+                                    <div style="font-size:30px;">
+                                        📜
+                                    </div>
+
+                                    <div class="mt-2 fw-semibold">
+                                        Transactions
+                                    </div>
+
+                                </div>
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- 4TH QUADRANT : RECENT TRANSACTIONS -->
+        <div class="col-md-6">
+
+            <div class="card shadow-sm border-0 h-100" >
+
+                <div class="card-body" style="overflow:auto;">
+
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+
+                        <h3 class="fw-bold">
+                            Recent Transactions
+                        </h3>
+
+                        <a href="/Wallet/History"
+                           class="btn btn-sm btn-outline-secondary">
+                            View All
+                        </a>
+
+                    </div>
+
+                    @if (ViewBag.RecentTransactions != null)
+                    {
+                        foreach (var t in ViewBag.RecentTransactions)
+                        {
+                            <div class="border rounded p-3 mb-3">
+
+                                <div class="d-flex justify-content-between align-items-center">
+
+                                    <div>
+
+                                        <strong>@t.Type</strong>
+
+                                        <br />
+
+                                        <small class="text-muted">
+                                            @t.Date.ToString("MMM dd, yyyy hh:mm tt")
+                                        </small>
+
+                                    </div>
+
+                                    <div class="fw-bold">
+
+                                        ₱ @t.Amount
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <p class="text-muted">
+                            No recent transactions
+                        </p>
+                    }
+
+                </div>
+
+            </div>
+
+        </div>
+
     </div>
 
 </div>
-
-<a href="/Wallet/History" class="btn btn-link mt-3">View Transactions</a>

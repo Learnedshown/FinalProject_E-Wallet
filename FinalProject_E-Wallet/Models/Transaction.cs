@@ -24,9 +24,7 @@ namespace FinalProject_E_Wallet.Models
 
         [Required(ErrorMessage = "Transaction type is required")]
         [RegularExpression("^(Cash In|Send)$", ErrorMessage = "Type must be 'Cash In' or 'Send'")]
-        [StringLength(20)]
-
-     
+        [StringLength(20)]  
         public string Type { get; set; } 
     }
 }

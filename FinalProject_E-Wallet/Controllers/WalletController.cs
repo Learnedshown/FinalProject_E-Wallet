@@ -22,14 +22,32 @@ namespace FinalProject_E_Wallet.Controllers
             TempData["Error"] = "Please Login First!";
             return null;
         }
-        public ActionResult Dashboard()
+        public IActionResult Dashboard()
         {
             var user = GetCurrentUser();
+
+            if (user == null)
+                return RedirectToAction("Login", "Account");
+
+            var recentTransactions = _context.Transactions
+                .Where(t => t.SenderId == user.Id || t.ReceiverId == user.Id)
+                .OrderByDescending(t => t.Date)
+                .Take(5)
+                .ToList();
+
+            ViewBag.RecentTransactions = recentTransactions;
+
+            return View(user);
+        }
+        public IActionResult CashIn()
+        {
+            var user = GetCurrentUser();
+
             if (user == null)
             {
-                TempData["Error"] = "Please Login First!";
                 return RedirectToAction("Login", "Account");
             }
+
             return View(user);
         }
         [HttpPost]
@@ -56,50 +74,79 @@ namespace FinalProject_E_Wallet.Controllers
             TempData["Success"] = "Cash In Successful!";
             return RedirectToAction("Dashboard");
         }
+        public IActionResult Send()
+        {
+            var currentUser = GetCurrentUser();
+
+            if (currentUser == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            // EXCLUDE CURRENT USER
+            var users = _context.Users
+                .Where(u => u.Id != currentUser.Id)
+                .ToList();
+
+            return View(users);
+        }
         [HttpPost]
         public IActionResult Send(string receiverEmail, decimal amount)
         {
             var sender = GetCurrentUser();
-            var receiver = _context.Users.FirstOrDefault(u => u.Email == receiverEmail);
-            if (receiver == null)
+
+            if (sender == null)
             {
-                ViewBag.Error = "User not found!";
-                TempData["Error"] = "User not found!";
-                return RedirectToAction("Dashboard");
-            }
-            if (receiver.Id == sender.Id)
-            {
-                ViewBag.Error = "Cannot send money to yourself!";
-                TempData["Error"] = "Cannot send money to yourself!";
-                return RedirectToAction("Dashboard");
-            }
-            if (amount <= 0)
-            {
-                ViewBag.Error = "Invalid Amount!";
-                TempData["Error"] = "Invalid Amount!";
-                return RedirectToAction("Dashboard");
-            }
-            if (sender.Balance < amount)
-            {
-                ViewBag.Error = "Insufficient Balance!";
-                TempData["Error"] = "Insufficient Balance!";
-                return RedirectToAction("Dashboard");
+                return RedirectToAction("Login", "Account");
             }
 
+            var receiver = _context.Users
+                .FirstOrDefault(u => u.Email == receiverEmail);
+
+            if (receiver == null)
+            {
+                TempData["Error"] = "User not found!";
+                return RedirectToAction("Send");
+            }
+
+            if (receiver.Id == sender.Id)
+            {
+                TempData["Error"] = "Cannot send money to yourself!";
+                return RedirectToAction("Send");
+            }
+
+            if (amount <= 0)
+            {
+                TempData["Error"] = "Invalid Amount!";
+                return RedirectToAction("Send");
+            }
+
+            if (sender.Balance < amount)
+            {
+                TempData["Error"] = "Insufficient Balance!";
+                return RedirectToAction("Send");
+            }
+
+            // UPDATE BALANCES
             sender.Balance -= amount;
             receiver.Balance += amount;
 
-            _context.Transactions.Add(new Transaction
+            // CREATE TRANSACTION
+            var transaction = new Transaction
             {
                 SenderId = sender.Id,
                 ReceiverId = receiver.Id,
                 Amount = amount,
                 Type = "Send",
                 Date = DateTime.Now
-            });
+            };
+
+            _context.Transactions.Add(transaction);
+
             _context.SaveChanges();
-            TempData["Success"] = "Sent Successfully!";
-            return RedirectToAction("Dashboard");
+
+            // REDIRECT TO RECEIPT
+            return RedirectToAction("Receipt", new { id = transaction.Id });
         }
         public IActionResult History()
         {
@@ -120,6 +167,107 @@ namespace FinalProject_E_Wallet.Controllers
             ViewBag.Users = users;
 
             return View(transactions);
+        }
+        public IActionResult Receipt(int id)
+        {
+            var transaction = _context.Transactions
+                .FirstOrDefault(t => t.Id == id);
+
+            if (transaction == null)
+            {
+                TempData["Error"] = "Transaction not found!";
+                return RedirectToAction("Dashboard");
+            }
+
+            var sender = _context.Users
+                .FirstOrDefault(u => u.Id == transaction.SenderId);
+
+            var receiver = _context.Users
+                .FirstOrDefault(u => u.Id == transaction.ReceiverId);
+
+            ViewBag.Sender = sender;
+            ViewBag.Receiver = receiver;
+
+            return View(transaction);
+        }
+
+        [HttpGet]
+        public IActionResult EditProfile()
+        {
+            var user = GetCurrentUser();
+
+            if (user == null)
+                return RedirectToAction("Login", "Account");
+
+            var model = new EditProfileViewModel
+            {
+                Id = user.Id,
+                FirstName = user.FirstName,
+                MiddleName = user.MiddleName,
+                LastName = user.LastName,
+                PhoneNumber = user.PhoneNumber,
+                Email = user.Email,
+                ProfilePicturePath = user.ProfilePicturePath
+            };
+
+            return View(model); // ✅ MUST BE VIEWMODEL
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditProfile(EditProfileViewModel model, IFormFile profileImage)
+        {
+            var user = GetCurrentUser();
+
+            if (user == null)
+                return RedirectToAction("Login", "Account");
+
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            // UPDATE BASIC INFO
+            user.FirstName = model.FirstName;
+            user.MiddleName = model.MiddleName;
+            user.LastName = model.LastName;
+            user.PhoneNumber = model.PhoneNumber;
+
+            // PASSWORD UPDATE (ONLY IF USER ENTERS NEW ONE)
+            if (!string.IsNullOrEmpty(model.NewPassword))
+            {
+                if (model.NewPassword != model.ConfirmPassword)
+                {
+                    ModelState.AddModelError("", "Passwords do not match!");
+                    TempData["Error"] = "Password does not match!";
+                    Console.WriteLine("Password does not match!");
+                    return View(model);
+                }
+
+                user.Password = model.NewPassword; // (you should hash this later)
+            }
+
+            // IMAGE UPLOAD
+            if (profileImage != null && profileImage.Length > 0)
+            {
+                string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
+
+                if (!Directory.Exists(uploadsFolder))
+                    Directory.CreateDirectory(uploadsFolder);
+
+                string fileName = $"{user.Id}{Path.GetExtension(profileImage.FileName)}";
+                string filePath = Path.Combine(uploadsFolder, fileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await profileImage.CopyToAsync(stream);
+                }
+
+                user.ProfilePicturePath = $"/uploads/{fileName}";
+            }
+
+            _context.SaveChanges();
+
+            return RedirectToAction("Dashboard");
         }
     }
 }

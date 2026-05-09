@@ -51,5 +51,7 @@ namespace FinalProject_E_Wallet.Models
 
         [Display(Name = "Display Name")]
         public string DisplayName => $"{FirstName} {LastName}";
+
+    
     }
 }

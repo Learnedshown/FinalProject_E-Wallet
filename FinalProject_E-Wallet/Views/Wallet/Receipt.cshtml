@@ -1,0 +1,78 @@
+﻿@model Transaction
+
+@{
+    var sender = ViewBag.Sender as User;
+    var receiver = ViewBag.Receiver as User;
+}
+
+<div class="container mt-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-md-6">
+
+            <div class="card shadow border-0">
+
+                <div class="card-body p-5">
+
+                    <div class="text-center mb-4">
+
+                        <div style="font-size:70px;">
+                            ✅
+                        </div>
+
+                        <h2 class="fw-bold text-success">
+                            Transaction Successful
+                        </h2>
+
+                    </div>
+
+                    <hr />
+
+                    <div class="mb-3 d-flex justify-content-between">
+                        <strong>Sender</strong>
+                        <span>@sender.FullName</span>
+                    </div>
+
+                    <div class="mb-3 d-flex justify-content-between">
+                        <strong>Receiver</strong>
+                        <span>@receiver.FullName</span>
+                    </div>
+
+                    <div class="mb-3 d-flex justify-content-between">
+                        <strong>Amount</strong>
+
+                        <span class="text-danger fw-bold">
+                            ₱ @Model.Amount
+                        </span>
+                    </div>
+
+                    <div class="mb-3 d-flex justify-content-between">
+                        <strong>Date</strong>
+
+                        <span>
+                            @Model.Date.ToString("MMM dd, yyyy hh:mm tt")
+                        </span>
+                    </div>
+
+                    <div class="mb-4 d-flex justify-content-between">
+                        <strong>Transaction Type</strong>
+                        <span>@Model.Type</span>
+                    </div>
+
+                    <hr />
+
+                    <a href="/Wallet/Dashboard"
+                       class="btn btn-primary w-100">
+                        Back to Dashboard
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

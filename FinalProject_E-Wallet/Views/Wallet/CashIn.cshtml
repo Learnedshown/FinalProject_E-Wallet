@@ -1,0 +1,138 @@
+﻿@model User
+
+<div class="container mt-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-md-6">
+
+            <div class="card shadow-sm border-0">
+
+                <div class="card-body p-4">
+
+                    <!-- TITLE -->
+                    <div class="text-center mb-4">
+
+                        <div style="font-size:60px;">
+                            💵
+                        </div>
+
+                        <h2 class="fw-bold mt-2">
+                            Cash In
+                        </h2>
+
+                        <p class="text-muted">
+                            Add funds to your wallet
+                        </p>
+
+                    </div>
+
+                    <!-- CURRENT BALANCE -->
+                    <div class="card bg-light border-0 mb-4">
+
+                        <div class="card-body text-center">
+
+                            <h6 class="text-muted">
+                                Current Balance
+                            </h6>
+
+                            <h2 class="fw-bold text-success">
+                                ₱ @Model.Balance
+                            </h2>
+
+                        </div>
+
+                    </div>
+                    <!-- QUICK AMOUNTS -->
+                    <div class="mt-4">
+
+                        <h6 class="mb-3">
+                            Quick Amounts
+                        </h6>
+
+                        <div class="d-flex flex-wrap gap-2">
+
+                            <button class="btn btn-outline-success"
+                                    onclick="setAmount(100)">
+                                ₱100
+                            </button>
+
+                            <button class="btn btn-outline-success"
+                                    onclick="setAmount(500)">
+                                ₱500
+                            </button>
+
+                            <button class="btn btn-outline-success"
+                                    onclick="setAmount(1000)">
+                                ₱1000
+                            </button>
+
+                            <button class="btn btn-outline-success"
+                                    onclick="setAmount(5000)">
+                                ₱5000
+                            </button>
+
+                        </div>
+
+                    </div>
+                    <br />
+                    <!-- CASH IN FORM -->
+                    <form asp-action="CashIn" method="post">
+
+                        <div class="mb-4">
+
+                            <label class="form-label fw-semibold">
+                                Amount
+                            </label>
+
+                            <input name="amount"
+                                   type="number"
+                                   step="0.01"
+                                   min="1"
+                                   class="form-control form-control-lg"
+                                   placeholder="Enter amount"
+                                   required />
+
+                        </div>
+                        
+
+
+                        <!-- BUTTONS -->
+                        <div class="d-flex gap-2">
+                            <a href="/Wallet/Dashboard"
+                               class="btn btn-outline-secondary w-100 btn-lg">
+
+                                Cancel
+
+                            </a>
+                            <button class="btn btn-success w-100 btn-lg">
+
+                                Cash In
+
+                            </button>
+
+                            
+
+                        </div>
+
+                    </form>
+
+                    
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+    function setAmount(value)
+    {
+        document.querySelector('input[name="amount"]').value = value;
+    }
+
+</script>

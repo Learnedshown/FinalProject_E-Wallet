@@ -1,0 +1,240 @@
+﻿@model List<User>
+
+<div class="container mt-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-md-7">
+
+            <div class="card shadow-sm border-0">
+
+                <div class="card-body p-4">
+
+                    
+                
+                    <div class="d-flex align-items-center justify-content-between mb-4 position-relative">
+
+                        <!-- CANCEL ICON (LEFT) -->
+                        <a asp-controller="Wallet" asp-action="Dashboard" class="text-dark fs-5">
+                            <i class="bi bi-arrow-left"></i>
+                        </a>
+
+                        <!-- CENTER TITLE -->
+                        <h2 class="fw-bold m-0 position-absolute start-50 translate-middle-x">
+                            Send Money
+                        </h2>
+
+                        <!-- RIGHT SPACER (keeps center truly centered) -->
+                        <div style="width: 24px;"></div>
+
+                    </div>
+
+
+                    <!-- SEARCH BAR -->
+                    <div class="mb-4">
+
+                        <input type="text"
+                               id="searchUser"
+                               class="form-control"
+                               placeholder="Search user by name or email..." />
+
+                    </div>
+
+                    <!-- USER LIST -->
+                    <div id="userList">
+
+                        @foreach (var user in Model)
+                        {
+                            <div class="user-card border rounded p-3 mb-3"
+                                 data-name="@user.FullName.ToLower()"
+                                 data-email="@user.Email.ToLower()">
+
+                                <div class="d-flex justify-content-between align-items-center">
+
+                                    <div>
+
+                                        <h5 class="mb-1">
+                                            @user.FullName
+                                        </h5>
+
+                                        <small class="text-muted">
+                                            @user.Email
+                                        </small>
+
+                                    </div>
+
+                                    <!-- SEND BUTTON -->
+                                    <button class="btn btn-primary"
+                                            onclick="selectUser('@user.Email', '@user.FullName')">
+
+                                        Select
+
+                                    </button>
+
+                                </div>
+
+                            </div>
+                        }
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- SEND MODAL -->
+<div class="modal fade"
+     id="sendModal"
+     tabindex="-1">
+
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+
+            <form asp-action="Send" method="post">
+
+                <div class="modal-header">
+
+                    <h5 class="modal-title">
+                        Send Money
+                    </h5>
+
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal">
+                    </button>
+
+                </div>
+
+                <div class="modal-body">
+
+                    <!-- RECEIVER -->
+                    <div class="mb-3">
+
+                        <label class="form-label">
+                            Receiver
+                        </label>
+
+                        <input id="receiverName"
+                               class="form-control"
+                               readonly />
+
+                    </div>
+
+                    <!-- HIDDEN EMAIL -->
+                    <input id="receiverEmail"
+                           name="receiverEmail"
+                           hidden />
+
+                    <!-- AMOUNT -->
+                    <div class="mb-3">
+
+                        <label class="form-label">
+                            Amount
+                        </label>
+
+                        <input id="amountInput"
+                               name="amount"
+                               type="number"
+                               step="0.01"
+                               class="form-control"
+                               required />
+
+                    </div>
+
+                    <!-- QUICK AMOUNTS -->
+                    <div class="mb-3">
+
+                        <label class="form-label">
+                            Quick Amounts
+                        </label>
+
+                        <div class="d-flex flex-wrap gap-2">
+
+                            <button type="button" class="btn btn-outline-primary quick-amount" data-amount="50">₱50</button>
+                            <button type="button" class="btn btn-outline-primary quick-amount" data-amount="100">₱100</button>
+                            <button type="button" class="btn btn-outline-primary quick-amount" data-amount="200">₱200</button>
+                            <button type="button" class="btn btn-outline-primary quick-amount" data-amount="500">₱500</button>
+                            <button type="button" class="btn btn-outline-primary quick-amount" data-amount="1000">₱1000</button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+
+                    <button type="submit"
+                            class="btn btn-success">
+
+                        Send Money
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+    // SEARCH FILTER
+    document.getElementById("searchUser")
+        .addEventListener("keyup", function () {
+
+            let value = this.value.toLowerCase();
+
+            let users = document.querySelectorAll(".user-card");
+
+            users.forEach(user => {
+
+                let name = user.dataset.name;
+                let email = user.dataset.email;
+
+                if (name.includes(value) || email.includes(value)) {
+                    user.style.display = "block";
+                }
+                else {
+                    user.style.display = "none";
+                }
+
+            });
+
+        });
+
+    // SELECT USER
+    function selectUser(email, name) {
+
+        document.getElementById("receiverEmail").value = email;
+
+        document.getElementById("receiverName").value = name;
+
+        var modal = new bootstrap.Modal(
+            document.getElementById('sendModal')
+        );
+
+        modal.show();
+    }
+     // QUICK AMOUNT BUTTONS
+    document.querySelectorAll(".quick-amount").forEach(btn => {
+
+        btn.addEventListener("click", function () {
+
+            document.getElementById("amountInput").value = this.dataset.amount;
+
+        });
+
+    });
+</script>
