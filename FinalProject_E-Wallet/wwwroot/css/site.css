@@ -40,7 +40,7 @@ body {
 
 body {
     min-height: 100vh;
-    background-color: #b2dfcc;
+    background-color: #7dcfae;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
@@ -296,7 +296,7 @@ body {
     align-items: center;
     justify-content: center;
     padding: 90px 20px 40px;
-    background-color: #b2dfcc;
+    background-color: #7dcfae;
 }
 
 .register-card {
