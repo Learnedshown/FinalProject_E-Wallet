@@ -96,8 +96,8 @@ body {
 }
 
 .brand-logo-box {
-    width: 110px;
-    height: 110px;
+    width: 260px;
+    height: 260px;
     background-color: #1a4a36;
     border-radius: 24px;
     display: flex;
@@ -721,27 +721,6 @@ body {
     font-weight: 500;
 }
 
-.bc-view-wallet {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 11px 22px;
-    background: rgba(255,255,255,0.2);
-    border: 1.5px solid rgba(255,255,255,0.4);
-    color: #fff;
-    border-radius: 12px;
-    font-weight: 600;
-    font-size: 0.875rem;
-    text-decoration: none;
-    backdrop-filter: blur(8px);
-    transition: all 0.2s ease;
-}
-
-    .bc-view-wallet:hover {
-        background: rgba(255,255,255,0.3);
-        color: #fff;
-        transform: translateX(3px);
-    }
 
 .bc-profile-card {
     padding: 28px;
@@ -1282,20 +1261,6 @@ body {
         transform: translateY(-1px);
     }
 
-.send-security {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    font-size: 0.75rem;
-    font-weight: 500;
-    color: #9ca3af;
-}
-
-    .send-security svg {
-        stroke: #9ca3af;
-        flex-shrink: 0;
-    }
 
 /* ===== Receipt / Transaction Page ===== */
 
@@ -2217,15 +2182,4 @@ body {
         box-shadow: 0 4px 14px rgba(26,122,74,0.35);
     }
 
-/* Footer */
-.cashin-footer {
-    margin-top: 20px;
-    text-align: center;
-    font-size: 0.74rem;
-    color: #aaa;
-}
-
-    .cashin-footer .lock-icon {
-        margin-right: 4px;
-    }
 

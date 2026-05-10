@@ -12,7 +12,9 @@
                 BuCash
             </a>
             <a href="/Account/Logout" class="bc-logout">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" /><polyline points="16 17 21 12 16 7" /><line x1="21" y1="12" x2="9" y2="12" /></svg>
+                <img src="~/images/logout.png" alt="Logout" 
+                     style="height:22px; margin-right:6px; vertical-align:middle;"
+                     onerror="this.style.display='none'" /> 
                 Logout
             </a>
         </nav>
@@ -34,10 +36,7 @@
                     <span class="bc-balance-currency">₱</span>@Model.Balance.ToString("N2")
                 </div>
                 <div class="bc-balance-note">Available in your BuCash wallet</div>
-                <a href="#" class="bc-view-wallet">
-                    View Wallet
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>
-                </a>
+
             </div>
 
             <!-- PROFILE CARD -->
@@ -47,15 +46,14 @@
                         <img src="@(Url.Content(Model.ProfilePicturePath) ?? "/images/Bucash.png")"
                              class="bc-avatar" alt="Profile" />
                         <div class="bc-avatar-badge">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
+                            ✔
                         </div>
                     </div>
                     <div class="bc-profile-info">
                         <div class="bc-profile-name">@Model.FullName</div>
                         <div class="bc-profile-email">@Model.Email</div>
                         <span class="bc-verified-badge">
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" /><polyline points="22 4 12 14.01 9 11.01" /></svg>
-                            BuCash Verified
+                            ✅ BuCash Verified
                         </span>
                     </div>
                 </div>
@@ -97,8 +95,7 @@
                 <div class="bc-section-header">
                     <span class="bc-section-title">Recent Transactions</span>
                     <a href="/Wallet/History" class="bc-view-all">
-                        View all
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>
+                        View all →
                     </a>
                 </div>
 
@@ -111,7 +108,7 @@
                             hasItems = true;
                             <div class="bc-tx-item">
                                 <div class="bc-tx-icon">
-                                    <svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23" /><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" /></svg>
+                                    ₱
                                 </div>
                                 <div class="bc-tx-info">
                                     <div class="bc-tx-type">@t.Type</div>
