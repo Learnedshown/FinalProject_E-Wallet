@@ -1,37 +1,108 @@
 ﻿@model List<Transaction>
 
-<h2 class="mb-3">Transaction History</h2>
+@{
+    var users = ViewBag.Users as List<User>;
+    var currentUserId = Context.Session.GetInt32("UserId");
 
-<a href="/Wallet/Dashboard" class="btn btn-secondary mb-3">Back</a>
+    // Group transactions by date
+    var grouped = Model
+        .GroupBy(t => t.Date.Date)
+        .OrderByDescending(g => g.Key);
+}
 
-<table class="table table-striped table-bordered">
+<style>
+    
+</style>
 
-    <thead class="table-dark">
-        <tr>
-            <th>Date</th>
-            <th>Type</th>
-            <th>Amount</th>
-            <th>Sender</th>
-            <th>Receiver</th>
-        </tr>
-    </thead>
+<div class="history-wrapper">
+    <div class="history-card">
 
-    <tbody>
-        @foreach (var t in Model)
-        {
-            var users = ViewBag.Users as List<User>;
+        <!-- Header -->
+        <div class="history-header">
+            <div class="history-header-left">
+                <a href="/Wallet/Dashboard" class="back-btn">&#8249;</a>
+                <h2 class="history-title">Transaction History</h2>
+            </div>
+        </div>
 
-            var sender = users.FirstOrDefault(u => u.Id == t.SenderId);
-            var receiver = users.FirstOrDefault(u => u.Id == t.ReceiverId);
+        <!-- Body -->
+        <div class="history-body">
 
-            <tr>
-                <td>@t.Date.ToString("MMM dd, yyyy hh:mm tt")</td>
-                <td>@t.Type</td>
-                <td>₱@t.Amount</td>
-                <td>@sender?.FullName</td>
-                <td>@receiver?.FullName</td>
-            </tr>
-        }
-    </tbody>
+            @if (!Model.Any())
+            {
+                <div class="empty-state">No transactions yet.</div>
+            }
+            else
+            {
+                @foreach (var group in grouped)
+                {
+                    <div class="date-group">
+                        <div class="date-label">@group.Key.ToString("MMMM dd, yyyy").ToUpper()</div>
 
-</table>
+                        @foreach (var t in group.OrderByDescending(x => x.Date))
+                        {
+                            var sender = users?.FirstOrDefault(u => u.Id == t.SenderId);
+                            var receiver = users?.FirstOrDefault(u => u.Id == t.ReceiverId);
+                            bool isCashIn = t.Type == "Cash In";
+                            bool isDebit = !isCashIn && t.SenderId == currentUserId;
+
+                            string label = isCashIn
+                                ? "Cash In"
+                                : (t.SenderId == currentUserId
+                                    ? $"To {receiver?.FullName ?? "Unknown"}"
+                                    : $"From {sender?.FullName ?? "Unknown"}");
+
+                            string badge = isCashIn ? "Completed" : "Success";
+                            string amtSign = isDebit ? "-" : "+";
+                            string amtCls = isDebit ? "negative" : "positive";
+                            string typeLabel = isCashIn ? "BuCash Direct" : "Send Money";
+
+                            <div class="txn-row">
+
+                                <!-- Icon -->
+                                <div class="txn-icon @(isCashIn ? "cashin-icon" : "send-icon")">
+                                    @if (isCashIn)
+                                    {
+                                        <!-- Arrow down-left: cash in -->
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="#1aaa5e" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                            <line x1="17" y1="7" x2="7" y2="17" />
+                                            <polyline points="17 17 7 17 7 7" />
+                                        </svg>
+                                    }
+                                    else
+                                    {
+                                        <!-- Arrow up-right: send -->
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="#f07040" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                            <line x1="7" y1="17" x2="17" y2="7" />
+                                            <polyline points="7 7 17 7 17 17" />
+                                        </svg>
+                                    }
+                                </div>
+
+                                <!-- Info -->
+                                <div class="txn-info">
+                                    <div class="txn-name">@label</div>
+                                    <div class="txn-meta">
+                                        <span class="txn-time">@t.Date.ToString("hh:mm tt").ToLower()</span>
+                                        <span class="txn-badge @(isCashIn ? "badge-completed" : "badge-success")">
+                                            @badge
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <!-- Amount -->
+                                <div class="txn-amount-wrap">
+                                    <span class="txn-amount @amtCls">@amtSign ₱@t.Amount.ToString("N2")</span>
+                                    <span class="txn-type-label">@typeLabel</span>
+                                </div>
+
+                            </div>
+                        }
+                    </div>
+                }
+            }
+
+        </div>
+
+    </div>
+</div>

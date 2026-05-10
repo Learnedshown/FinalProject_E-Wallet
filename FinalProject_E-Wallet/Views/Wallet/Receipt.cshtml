@@ -5,74 +5,79 @@
     var receiver = ViewBag.Receiver as User;
 }
 
-<div class="container mt-5">
 
-    <div class="row justify-content-center">
 
-        <div class="col-md-6">
+<div class="receipt-page">
 
-            <div class="card shadow border-0">
+    <!-- SUCCESS ICON -->
+    <div class="receipt-check-wrap">
+        <div class="receipt-check">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
+        </div>
+    </div>
 
-                <div class="card-body p-5">
+    <h1 class="receipt-heading">Transaction Successful</h1>
+    <p class="receipt-subheading">Your payment has been processed securely.</p>
 
-                    <div class="text-center mb-4">
+    <!-- RECEIPT CARD -->
+    <div class="receipt-card">
 
-                        <div style="font-size:70px;">
-                            ✅
-                        </div>
+        <!-- AMOUNT -->
+        <div class="receipt-amount-section">
+            <div class="receipt-amount-label">AMOUNT SENT</div>
+            <div class="receipt-amount">₱@Model.Amount.ToString("N2")</div>
+        </div>
 
-                        <h2 class="fw-bold text-success">
-                            Transaction Successful
-                        </h2>
+        <div class="receipt-divider"></div>
 
-                    </div>
-
-                    <hr />
-
-                    <div class="mb-3 d-flex justify-content-between">
-                        <strong>Sender</strong>
-                        <span>@sender.FullName</span>
-                    </div>
-
-                    <div class="mb-3 d-flex justify-content-between">
-                        <strong>Receiver</strong>
-                        <span>@receiver.FullName</span>
-                    </div>
-
-                    <div class="mb-3 d-flex justify-content-between">
-                        <strong>Amount</strong>
-
-                        <span class="text-danger fw-bold">
-                            ₱ @Model.Amount
-                        </span>
-                    </div>
-
-                    <div class="mb-3 d-flex justify-content-between">
-                        <strong>Date</strong>
-
-                        <span>
-                            @Model.Date.ToString("MMM dd, yyyy hh:mm tt")
-                        </span>
-                    </div>
-
-                    <div class="mb-4 d-flex justify-content-between">
-                        <strong>Transaction Type</strong>
-                        <span>@Model.Type</span>
-                    </div>
-
-                    <hr />
-
-                    <a href="/Wallet/Dashboard"
-                       class="btn btn-primary w-100">
-                        Back to Dashboard
-                    </a>
-
-                </div>
-
+        <!-- DETAILS -->
+        <div class="receipt-rows">
+            <div class="receipt-row">
+                <span class="receipt-row-label">Sender</span>
+                <span class="receipt-row-value">@sender?.FullName</span>
             </div>
-
+            <div class="receipt-row">
+                <span class="receipt-row-label">Receiver</span>
+                <span class="receipt-row-value">@receiver?.FullName</span>
+            </div>
+            <div class="receipt-row">
+                <span class="receipt-row-label">Transaction Type</span>
+                <span class="receipt-type-badge">@Model.Type</span>
+            </div>
+            <div class="receipt-row">
+                <span class="receipt-row-label">Date &amp; Time</span>
+                <span class="receipt-row-value">@Model.Date.ToString("MMM d, yyyy hh:mm tt")</span>
+            </div>
+            <div class="receipt-row">
+                <span class="receipt-row-label">Status</span>
+                <span class="receipt-status">
+                    <svg width="10" height="10" viewBox="0 0 10 10"><circle cx="5" cy="5" r="5" fill="#22c55e" /></svg>
+                    Completed
+                </span>
+            </div>
         </div>
 
     </div>
+
+    <!-- ACTIONS -->
+    <a href="/Wallet/Dashboard" class="receipt-btn-primary">Back to Dashboard</a>
+
+    <div class="receipt-btn-row">
+        <button class="receipt-btn-secondary" onclick="window.print()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9" /><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" /><rect x="6" y="14" width="12" height="8" /></svg>
+            Share Receipt
+        </button>
+        <button class="receipt-btn-secondary" onclick="window.print()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></svg>
+            Download
+        </button>
+    </div>
+
+    <!-- SECURITY NOTE -->
+    <div class="receipt-security">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg>
+        Secured by BuCash Vision
+    </div>
+    <div class="receipt-security-sub">This transaction is protected by institutional-grade encryption<br>and real-time monitoring.</div>
 
 </div>

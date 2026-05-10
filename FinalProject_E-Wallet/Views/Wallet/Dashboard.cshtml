@@ -1,258 +1,151 @@
 ﻿@model User
 
-<div class="container mt-4">
 
-    <!-- HEADER -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
+<div class="bucash-dashboard">
 
-        <h2 class="fw-bold">
-            Welcome to BuCash
-        </h2>
-
-        <a href="/Account/Logout"
-           class="btn btn-danger">
-            Logout
-        </a>
-
+    <div class="bc-topbar">
+        <nav class="top-nav">
+            <a class="brand">
+                <img src="~/images/Bucash.png" alt="BuCash"
+                     style="height:22px; margin-right:6px; vertical-align:middle;"
+                     onerror="this.style.display='none'" />
+                BuCash
+            </a>
+            <a href="/Account/Logout" class="bc-logout">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" /><polyline points="16 17 21 12 16 7" /><line x1="21" y1="12" x2="9" y2="12" /></svg>
+                Logout
+            </a>
+        </nav>
     </div>
 
-    <!-- MAIN GRID -->
-    <div class="row g-4">
+    <div class="bc-content">
 
-        <!-- 1ST QUADRANT : BALANCE -->
-        <div class="col-md-6">
-
-            <div class="card shadow-sm border-0 h-100">
-
-                <div class="card-body d-flex flex-column justify-content-between">
-
-                    <div>
-
-                        <h3 class="fw-bold mb-4">
-                            Total Balance
-                        </h3>
-
-                        <h1 class="text-success fw-bold">
-                            ₱ @Model.Balance
-                        </h1>
-
-                    </div>
-
-                    <div class="mt-4">
-
-                        <a href="#"
-                           class="btn btn-dark">
-                            View Wallet
-                        </a>
-
-                    </div>
-
-                </div>
-
-            </div>
-
+        <div class="bc-greeting">
+            <div class="bc-greeting-sub">👋 Good day</div>
+            <div class="bc-greeting-name">Welcome back, @Model.FirstName!</div>
         </div>
 
-        <!-- 2ND QUADRANT : PROFILE -->
-        <div class="col-md-6">
+        <div class="bc-grid">
 
-            <div class="card shadow-sm border-0 h-100">
-
-                <div class="card-body">
-
-                    <div class="d-flex align-items-center">
-
-                        <!-- PROFILE ICON👤 -->
-                        <div class="border rounded d-flex justify-content-center align-items-center"
-                             style="width:120px; height:120px; font-size:50px;">
-
-                            <img src="@(Url.Content(Model.ProfilePicturePath) ?? "/images/Bucash.png")"
-                                 class="rounded-circle"
-                                 width="100"
-                                 height="100"
-                                 style="object-fit: cover;" />
-                            
-
-                        </div>
-                        
-
-                        <!-- USER INFO -->
-                        <div class="ms-4">
-
-                            <h2 class="fw-bold mb-2">
-                                @Model.FullName
-                            </h2>
-
-                            <p class="text-muted mb-1">
-                                @Model.Email
-                            </p>
-
-                            <p class="text-muted">
-                                BuCash User
-                            </p>
-
-                        </div>
-
-                    </div>
-                    <a asp-action="EditProfile" asp-controller="Wallet">Edit Profile</a>
-
+            <!-- BALANCE CARD -->
+            <div class="bc-card bc-balance-card">
+                <div class="bc-balance-label">Total Balance</div>
+                <div class="bc-balance-amount">
+                    <span class="bc-balance-currency">₱</span>@Model.Balance.ToString("N2")
                 </div>
-
+                <div class="bc-balance-note">Available in your BuCash wallet</div>
+                <a href="#" class="bc-view-wallet">
+                    View Wallet
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>
+                </a>
             </div>
 
-        </div>
-
-        <!-- 3RD QUADRANT : QUICK ACTIONS -->
-        <div class="col-md-6">
-
-            <div class="card shadow-sm border-0 h-100" >
-
-                <div class="card-body">
-
-                    <h3 class="fw-bold mb-4">
-                        Quick Actions
-                    </h3>
-
-                    <div class="row text-center g-3">
-
-                        <!-- SEND -->
-                        <div class="col-4">
-
-                            <a href="/Wallet/Send"
-                               class="text-decoration-none text-dark">
-
-                                <div class="border rounded p-4 h-100">
-
-                                    <div style="font-size:30px;">
-                                        📤
-                                    </div>
-
-                                    <div class="mt-2 fw-semibold">
-                                        Send
-                                    </div>
-
-                                </div>
-
-                            </a>
-
+            <!-- PROFILE CARD -->
+            <div class="bc-card bc-profile-card">
+                <div class="bc-profile-inner">
+                    <div class="bc-avatar-wrap">
+                        <img src="@(Url.Content(Model.ProfilePicturePath) ?? "/images/Bucash.png")"
+                             class="bc-avatar" alt="Profile" />
+                        <div class="bc-avatar-badge">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
                         </div>
-
-                        <!-- CASH IN -->
-                        <div class="col-4">
-
-                            <a href="/Wallet/CashIn"
-                               class="text-decoration-none text-dark">
-
-                                <div class="border rounded p-4 h-100">
-
-                                    <div style="font-size:30px;">
-                                        💵
-                                    </div>
-
-                                    <div class="mt-2 fw-semibold">
-                                        Cash In
-                                    </div>
-
-                                </div>
-
-                            </a>
-
-                        </div>
-
-                        <!-- TRANSACTIONS -->
-                        <div class="col-4">
-
-                            <a href="/Wallet/History"
-                               class="text-decoration-none text-dark">
-
-                                <div class="border rounded p-4 h-100">
-
-                                    <div style="font-size:30px;">
-                                        📜
-                                    </div>
-
-                                    <div class="mt-2 fw-semibold">
-                                        Transactions
-                                    </div>
-
-                                </div>
-
-                            </a>
-
-                        </div>
-
                     </div>
-
+                    <div class="bc-profile-info">
+                        <div class="bc-profile-name">@Model.FullName</div>
+                        <div class="bc-profile-email">@Model.Email</div>
+                        <span class="bc-verified-badge">
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" /><polyline points="22 4 12 14.01 9 11.01" /></svg>
+                            BuCash Verified
+                        </span>
+                    </div>
                 </div>
-
+                <a asp-action="EditProfile" asp-controller="Wallet" class="bc-edit-profile">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" /><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" /></svg>
+                    Edit Profile
+                </a>
             </div>
 
-        </div>
+            <!-- QUICK ACTIONS -->
+            <div class="bc-card bc-actions-card">
+                <div class="bc-section-header">
+                    <span class="bc-section-title">Quick Actions</span>
+                </div>
+                <div class="bc-actions-grid">
+                    <a href="/Wallet/Send" class="bc-action-btn">
+                        <div class="bc-action-icon">
+                            <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13" /><polygon points="22 2 15 22 11 13 2 9 22 2" /></svg>
+                        </div>
+                        <span class="bc-action-label">Send</span>
+                    </a>
+                    <a href="/Wallet/CashIn" class="bc-action-btn">
+                        <div class="bc-action-icon">
+                            <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2" /><line x1="2" y1="10" x2="22" y2="10" /></svg>
+                        </div>
+                        <span class="bc-action-label">Cash In</span>
+                    </a>
+                    <a href="/Wallet/History" class="bc-action-btn">
+                        <div class="bc-action-icon">
+                            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>
+                        </div>
+                        <span class="bc-action-label">History</span>
+                    </a>
+                </div>
+            </div>
 
-        <!-- 4TH QUADRANT : RECENT TRANSACTIONS -->
-        <div class="col-md-6">
+            <!-- RECENT TRANSACTIONS -->
+            <div class="bc-card bc-tx-card">
+                <div class="bc-section-header">
+                    <span class="bc-section-title">Recent Transactions</span>
+                    <a href="/Wallet/History" class="bc-view-all">
+                        View all
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>
+                    </a>
+                </div>
 
-            <div class="card shadow-sm border-0 h-100" >
-
-                <div class="card-body" style="overflow:auto;">
-
-                    <div class="d-flex justify-content-between align-items-center mb-4">
-
-                        <h3 class="fw-bold">
-                            Recent Transactions
-                        </h3>
-
-                        <a href="/Wallet/History"
-                           class="btn btn-sm btn-outline-secondary">
-                            View All
-                        </a>
-
-                    </div>
-
-                    @if (ViewBag.RecentTransactions != null)
-                    {
-                        foreach (var t in ViewBag.RecentTransactions)
+                @if (ViewBag.RecentTransactions != null)
+                {
+                    bool hasItems = false;
+                    <div class="bc-tx-list">
+                        @foreach (var t in ViewBag.RecentTransactions)
                         {
-                            <div class="border rounded p-3 mb-3">
-
-                                <div class="d-flex justify-content-between align-items-center">
-
-                                    <div>
-
-                                        <strong>@t.Type</strong>
-
-                                        <br />
-
-                                        <small class="text-muted">
-                                            @t.Date.ToString("MMM dd, yyyy hh:mm tt")
-                                        </small>
-
-                                    </div>
-
-                                    <div class="fw-bold">
-
-                                        ₱ @t.Amount
-
-                                    </div>
-
+                            hasItems = true;
+                            <div class="bc-tx-item">
+                                <div class="bc-tx-icon">
+                                    <svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23" /><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" /></svg>
                                 </div>
-
+                                <div class="bc-tx-info">
+                                    <div class="bc-tx-type">@t.Type</div>
+                                    <div class="bc-tx-date">@t.Date.ToString("MMM dd, yyyy · hh:mm tt")</div>
+                                </div>
+                                <div class="bc-tx-amount">₱ @t.Amount</div>
                             </div>
                         }
-                    }
-                    else
+                    </div>
+                    @if (!hasItems)
                     {
-                        <p class="text-muted">
-                            No recent transactions
-                        </p>
+                        <div class="bc-empty">
+                            <div class="bc-empty-icon">
+                                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>
+                            </div>
+                            <div class="bc-empty-title">No recent transactions</div>
+                            <div class="bc-empty-sub">Start using BuCash to<br>see your history here.</div>
+                        </div>
                     }
-
-                </div>
-
+                }
+                else
+                {
+                    <div class="bc-empty">
+                        <div class="bc-empty-icon">
+                            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>
+                        </div>
+                        <div class="bc-empty-title">No recent transactions</div>
+                        <div class="bc-empty-sub">Start using BuCash to<br>see your history here.</div>
+                    </div>
+                }
             </div>
 
         </div>
-
     </div>
+
 
 </div>

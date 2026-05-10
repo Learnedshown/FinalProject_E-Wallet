@@ -1,91 +1,118 @@
 ﻿@model EditProfileViewModel
 
-<div class="container mt-4">
-   
+<div class="ep-wrapper">
+    <div class="ep-card">
 
-    <div class="card shadow-sm p-4">
-        <a asp-controller="Wallet" asp-action="Dashboard" class="text-dark fs-5">
-            <i class="bi bi-arrow-left"></i>
-        </a>
-
-        <h3 class="mb-4">Edit Profile</h3>
-        
-        <form asp-controller="Wallet" asp-action="EditProfile" method="post" enctype="multipart/form-data">
-
-            <!-- PROFILE IMAGE -->
-            <div class="text-center mb-3">
-
-                <img id="previewImage"
-                     src="@(Model.ProfilePicturePath ?? "/images/Bucash.png")"
-                     class="rounded-circle"
-                     width="120"
-                     height="120"
-                     style="object-fit: cover;" />
-
-                <input type="file"
-                       name="profileImage"
-                       class="form-control mt-2"
-                       accept="image/*"
-                       onchange="previewFile(event)" />
-
+        <!-- HEADER -->
+        <div class="ep-header">
+            <div class="ep-header-left">
+                <a asp-controller="Wallet" asp-action="Dashboard" class="ep-back-btn" title="Back">
+                    &#8592;
+                </a>
+                <div>
+                    <p class="ep-title">Edit Profile</p>
+                    <p class="ep-subtitle">Manage your personal information and security</p>
+                </div>
             </div>
+            <div class="ep-brand">BuCash</div>
+        </div>
 
-            <!-- HIDDEN ID -->
+        <form asp-controller="Wallet" asp-action="EditProfile" method="post" enctype="multipart/form-data">
             <input type="hidden" asp-for="Id" />
 
-            <!-- FIRST NAME -->
-            <div class="mb-3">
-                <label>First Name</label>
-                <input asp-for="FirstName" class="form-control" />
-                <span asp-validation-for="FirstName" class="text-danger"></span>
-            </div>
+            <div class="ep-body">
 
-            <!-- MIDDLE NAME -->
-            <div class="mb-3">
-                <label>Middle Name</label>
-                <input asp-for="MiddleName" class="form-control" />
-                <span asp-validation-for="MiddleName" class="text-danger"></span>
-            </div>
+                <!-- LEFT: AVATAR -->
+                <div class="ep-avatar-col">
+                    <div class="ep-avatar-wrap">
+                        <img id="previewImage"
+                             src="@(string.IsNullOrEmpty(Model.ProfilePicturePath) ? "/images/Bucash.png" : Model.ProfilePicturePath)"
+                             alt="Profile" />
+                        <label class="ep-avatar-edit" for="profileImageInput" title="Change photo">
+                            <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M13.586 3.586a2 2 0 112.828 2.828l-9.9 9.9-3.414.586.586-3.414 9.9-9.9z" />
+                            </svg>
+                        </label>
+                    </div>
+                    <input type="file"
+                           id="profileImageInput"
+                           name="profileImage"
+                           class="ep-file-input"
+                           accept="image/jpeg,image/gif,image/png"
+                           onchange="previewFile(event)" />
+                    <div class="ep-avatar-label">Profile Picture</div>
+                    <div class="ep-avatar-hint">JPG, GIF or PNG. Max size 2MB</div>
+                </div>
 
-            <!-- LAST NAME -->
-            <div class="mb-3">
-                <label>Last Name</label>
-                <input asp-for="LastName" class="form-control" />
-                <span asp-validation-for="LastName" class="text-danger"></span>
-            </div>
+                <!-- RIGHT: FIELDS -->
+                <div class="ep-form-col">
 
-            <!-- EMAIL (readonly) -->
-            <div class="mb-3">
-                <label>Email</label>
-                <input asp-for="Email" class="form-control" readonly />
-            </div>
+                    <!-- PERSONAL INFORMATION -->
+                    <div class="ep-section-label">Personal Information</div>
 
-            <!-- PHONE -->
-            <div class="mb-3">
-                <label>Phone Number</label>
-                <input asp-for="PhoneNumber" class="form-control" />
-                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-            </div>
-            <!-- NEW PASSWORD -->
-            <div class="mb-3">
-                <label>New Password</label>
-                <input asp-for="NewPassword" class="form-control" type="password" autocomplete="new-password"/>
-            </div>
+                    <div class="ep-row">
+                        <div class="ep-field">
+                            <label>First Name</label>
+                            <input asp-for="FirstName" placeholder="First Name" />
+                            <span asp-validation-for="FirstName" class="text-danger"></span>
+                        </div>
+                        <div class="ep-field">
+                            <label>Last Name</label>
+                            <input asp-for="LastName" placeholder="Last Name" />
+                            <span asp-validation-for="LastName" class="text-danger"></span>
+                        </div>
+                    </div>
 
-            <!-- CONFIRM PASSWORD -->
-            <div class="mb-3">
-                <label>Confirm Password</label>
-                <input asp-for="ConfirmPassword" class="form-control" type="password" autocomplete="new-password" />
+                    <div class="ep-field full">
+                        <label>Middle Name</label>
+                        <input asp-for="MiddleName" placeholder="Middle Name" />
+                        <span asp-validation-for="MiddleName" class="text-danger"></span>
+                    </div>
+
+                    <hr class="ep-divider" />
+
+                    <!-- CONTACT & SECURITY -->
+                    <div class="ep-section-label">Contact &amp; Security</div>
+
+                    <div class="ep-row">
+                        <div class="ep-field">
+                            <label>Email Address</label>
+                            <input asp-for="Email" readonly placeholder="Email" />
+                        </div>
+                        <div class="ep-field">
+                            <label>Phone Number</label>
+                            <input asp-for="PhoneNumber" placeholder="Phone Number" />
+                            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="ep-row">
+                        <div class="ep-field">
+                            <label>New Password</label>
+                            <input asp-for="NewPassword" type="password" autocomplete="new-password" placeholder="••••••••" />
+                        </div>
+                        <div class="ep-field">
+                            <label>Confirm Password</label>
+                            <input asp-for="ConfirmPassword" type="password" autocomplete="new-password" placeholder="••••••••" />
+                        </div>
+                    </div>
+
+                    <!-- ACTIONS -->
+                    <div class="ep-actions">
+                        <a asp-controller="Wallet" asp-action="Dashboard" class="ep-discard">Discard Changes</a>
+                        <button type="submit" class="ep-save">
+                            Save Changes
+                            <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                    </div>
+
+                </div>
             </div>
-
-            <button type="submit" class="btn btn-primary w-100">
-                Save Changes
-            </button>
-
         </form>
 
     </div>
-
 </div>
 
 <script>
