@@ -19,6 +19,7 @@
             </a>
         </nav>
     </div>
+    <br />
 
     <div class="bc-content">
 
@@ -43,7 +44,9 @@
             <div class="bc-card bc-profile-card">
                 <div class="bc-profile-inner">
                     <div class="bc-avatar-wrap">
-                        <img src="@(Url.Content(Model.ProfilePicturePath) ?? "/images/Bucash.png")"
+                        <img src="@(string.IsNullOrEmpty(Model.ProfilePicturePath)
+                                 ? Url.Content("~/images/Bucash.png")
+                                 : Url.Content(Model.ProfilePicturePath))"
                              class="bc-avatar" alt="Profile" />
                         <div class="bc-avatar-badge">
                             ✔

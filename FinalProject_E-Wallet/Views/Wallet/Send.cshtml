@@ -27,7 +27,9 @@
         <div id="userList" class="send-user-list">
             @foreach (var user in Model)
             {
-                var initials = string.Join("", user.FullName.Split(' ').Take(2).Select(w => w[0].ToString().ToUpper()));
+                var initials = string.Join("", user.FullName
+                .Split(' ', StringSplitOptions.RemoveEmptyEntries)
+                .Select(w => w[0].ToString().ToUpper()));
                 var colors = new[] { "#2d6a4f", "#1e6091", "#6d4c41", "#4a4e69", "#5e548e", "#3a7ca5" };
                 var colorIndex = Math.Abs(user.Email.GetHashCode()) % colors.Length;
                 var avatarColor = colors[colorIndex];

@@ -17,20 +17,43 @@ namespace FinalProject_E_Wallet.Controllers
         {
             return View();
         }
+
+
         [HttpPost]
-        public IActionResult Register(User user)
+        public IActionResult Register(RegisterViewModel model)
         {
+            var existingUser = _context.Users
+                .FirstOrDefault(u => u.Email == model.Email || u.PhoneNumber == model.PhoneNumber);
+
+            if (existingUser != null)
+            {
+                ModelState.AddModelError("", "Email or Phone number already exists");
+                TempData["Error"] = "Email or Phone number already exists";
+                return View(model);
+            }
+
             if (ModelState.IsValid)
             {
+                var user = new User
+                {
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    Email = model.Email,
+                    PhoneNumber = model.PhoneNumber,
+                    Password = model.Password
+                };
+
                 _context.Users.Add(user);
                 _context.SaveChanges();
+
                 TempData["Success"] = "User Registered Successfully!";
                 return RedirectToAction("Login");
             }
-            TempData["Error"] = "Registration Failed!";
-            return RedirectToAction("Register");
 
+            TempData["Error"] = "Registration Failed!";
+            return View(model);
         }
+
         [HttpGet]
         public IActionResult Login()
         {

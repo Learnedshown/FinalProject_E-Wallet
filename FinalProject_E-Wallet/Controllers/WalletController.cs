@@ -273,6 +273,8 @@ namespace FinalProject_E_Wallet.Controllers
                 }
 
                 user.ProfilePicturePath = $"/uploads/{fileName}";
+                Console.WriteLine($"/uploads/{fileName}");
+
             }
 
             _context.SaveChanges();

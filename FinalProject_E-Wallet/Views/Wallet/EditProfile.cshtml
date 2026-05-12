@@ -90,10 +90,12 @@
                         <div class="ep-field">
                             <label>New Password</label>
                             <input asp-for="NewPassword" type="password" autocomplete="new-password" placeholder="••••••••" />
+                            <span asp-validation-for="NewPassword" class="text-danger"></span>
                         </div>
                         <div class="ep-field">
                             <label>Confirm Password</label>
                             <input asp-for="ConfirmPassword" type="password" autocomplete="new-password" placeholder="••••••••" />
+                            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                         </div>
                     </div>
 

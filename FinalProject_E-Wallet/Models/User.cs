@@ -9,15 +9,18 @@ namespace FinalProject_E_Wallet.Models
 
         [Required(ErrorMessage = "First name is required")]
         [StringLength(50, MinimumLength = 2, ErrorMessage = "First name must be between 2 and 50 characters")]
+        [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Only letters allowed")]
         [Display(Name = "First Name")]
         public string FirstName { get; set; }
 
         [StringLength(50, ErrorMessage = "Middle name cannot exceed 50 characters")]
+        [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage ="Only letters allowed")]
         [Display(Name = "Middle Name")]
         public string? MiddleName { get; set; }
 
         [Required(ErrorMessage = "Last name is required")]
         [StringLength(50, MinimumLength = 2, ErrorMessage = "Last name must be between 2 and 50 characters")]
+        [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Only letters allowed")]
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
