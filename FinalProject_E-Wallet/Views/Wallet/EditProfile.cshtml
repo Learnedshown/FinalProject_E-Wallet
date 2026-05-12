@@ -26,7 +26,7 @@
                 <div class="ep-avatar-col">
                     <div class="ep-avatar-wrap">
                         <img id="previewImage"
-                             src="@(string.IsNullOrEmpty(Model.ProfilePicturePath) ? "/images/Bucash.png" : Model.ProfilePicturePath)"
+                             src="@(string.IsNullOrEmpty(Model.ProfilePicturePath) ? "/images/Bucash.png" : Model.ProfilePicturePath + "?v=" + DateTime.UtcNow.Ticks)"
                              alt="Profile" />
                         <label class="ep-avatar-edit" for="profileImageInput" title="Change photo">
                             <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -81,7 +81,7 @@
                         </div>
                         <div class="ep-field">
                             <label>Phone Number</label>
-                            <input asp-for="PhoneNumber" placeholder="Phone Number" />
+                            <input asp-for="PhoneNumber" type="number" placeholder="Phone Number" />
                             <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                         </div>
                     </div>

@@ -60,17 +60,17 @@ namespace FinalProject_E_Wallet.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Login(string email, string password)
+        public IActionResult Login(string identifier, string password)
         {
-            var user = _context.Users.FirstOrDefault(u => u.Email == email && u.Password == password);
+            var user = _context.Users.FirstOrDefault(u => (u.Email == identifier || u.PhoneNumber == identifier)  && u.Password == password);
             if (user != null)
             {
                 HttpContext.Session.SetInt32("UserId", user.Id);
                 TempData["Success"] = "Login Success!";
                 return RedirectToAction("Dashboard", "Wallet");
             }
-            ModelState.AddModelError("", "Invalid email or password");
-            TempData["Error"] = "Invalid email or password";
+            ModelState.AddModelError("", "Invalid email/phone number or password");
+            TempData["Error"] = "Invalid email/phone number or password";
             return View();
         }
         public IActionResult Logout()

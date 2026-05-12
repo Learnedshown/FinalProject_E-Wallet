@@ -36,7 +36,7 @@
                 <div class="bc-balance-amount">
                     <span class="bc-balance-currency">₱</span>@Model.Balance.ToString("N2")
                 </div>
-                <div class="bc-balance-note">Available in your BuCash wallet</div>
+                <div class="bc-balance-note">Available funds for transactions</div>
 
             </div>
 
@@ -46,7 +46,7 @@
                     <div class="bc-avatar-wrap">
                         <img src="@(string.IsNullOrEmpty(Model.ProfilePicturePath)
                                  ? Url.Content("~/images/Bucash.png")
-                                 : Url.Content(Model.ProfilePicturePath))"
+                                 : Url.Content(Model.ProfilePicturePath) +"?v=" + DateTime.UtcNow.Ticks)"
                              class="bc-avatar" alt="Profile" />
                         <div class="bc-avatar-badge">
                             ✔

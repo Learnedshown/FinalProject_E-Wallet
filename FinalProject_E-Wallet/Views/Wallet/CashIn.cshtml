@@ -32,7 +32,7 @@
         </div>
 
         <!-- Form -->
-        <form asp-action="CashIn" method="post">
+        <form asp-action="CashIn" method="post" onsubmit="this.querySelector('button[type=submit]').disabled=true;">
 
             <label class="amount-label">Amount</label>
             <div class="amount-input-wrap">
